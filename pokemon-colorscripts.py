@@ -114,6 +114,30 @@ def show_random_pokemon(
         sys.exit(1)
 
 
+def show_random_pokemon_by_names(
+    names: str, show_title: bool, shiny: bool, is_large: bool
+) -> None:
+    names_list = []
+    with open(f"{PROGRAM_DIR}/pokemon.json") as file:
+        pokemon_json = json.load(file)
+        pokemon_names = {pokemon["name"] for pokemon in pokemon_json}
+        # Test and reject invalid names
+        for name in names.split(","):
+            if name not in pokemon_names:
+                print(f"Invalid pokemon {name}")
+            else:
+                names_list.append(name)
+    if len(names_list) < 1:
+        print("No correct pokemon names has been provided.")
+        sys.exit(1)
+    random_pokemon = random.choice(names_list)
+    # if the shiny flag is not passed, set a small random chance for the
+    # pokemon to be shiny. If the flag is set, always show shiny
+    if not shiny:
+        shiny = random.random() <= SHINY_RATE
+    show_pokemon_by_name(random_pokemon, show_title, shiny, is_large)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="pokemon-colorscripts",
@@ -173,6 +197,14 @@ def main() -> None:
                 The generations can be provided as a continuous range (eg. 1-3)
                 or as a list of generations (1,3,6)""",
     )
+    parser.add_argument(
+        "-rn",
+        "--random-by-names",
+        type=str,
+        help="""Show a random pokemon chosen in the provided list of names.
+                This list is in form (poke_1,poke_2,...,poke_n) only separated
+                by comas WITHOUT whitespace (eg. charmander,bulbasaur,squirtle)"""
+    )
 
     args = parser.parse_args()
 
@@ -185,6 +217,13 @@ def main() -> None:
             print("--form flag unexpected with --random")
             sys.exit(1)
         show_random_pokemon(args.random, args.no_title, args.shiny, args.big)
+    elif args.random_by_names:
+        if args.form:
+            print("--form flag unexpected with --random_by_names")
+            sys.exit(1)
+        show_random_pokemon_by_names(
+                args.random_by_names, args.no_title, args.shiny, args.big
+            )
     else:
         parser.print_help()
 

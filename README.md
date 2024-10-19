@@ -99,6 +99,10 @@ optional arguments:
                         Show a random pokemon. This flag can optionally be followed by a generation number or range (1-8) to show random pokemon
                         from a specific generation or range of generations. The generations can be provided as a continuous range (eg. 1-3) or as a
                         list of generations (1,3,6)
+  -rn RANDOM_BY_NAMES, --random-by-names RANDOM_BY_NAMES
+                        Show a random pokemon chosen in the provided list of names. This
+                        list is in form (poke_1,poke_2,...,poke_n) only separated by
+                        comas WITHOUT whitespace (eg. charmander,bulbasaur,squirtle)
 ```
 
 Example of printing out a specific pokemon
@@ -124,6 +128,10 @@ pokemon-colorscripts -r 1-3
 Example of printing out a random pokemon from generations 1,3 and 6
 ```
 pokemon-colorscripts -r 1,3,6
+```
+Example of printingn out a random pokemon from a provided list
+```
+pokemon_colorscripts -rn bulbasaur,charmander,squirtle
 ```
 Example of printing out a larger sprite
 ```
