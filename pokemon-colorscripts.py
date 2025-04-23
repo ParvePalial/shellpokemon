@@ -9,6 +9,7 @@ import sys
 PROGRAM = os.path.realpath(__file__)
 PROGRAM_DIR = os.path.dirname(PROGRAM)
 COLORSCRIPTS_DIR = f"{PROGRAM_DIR}/colorscripts"
+BALLS_DIR = f"{PROGRAM_DIR}/colorscripts/balls"
 
 REGULAR_SUBDIR = "regular"
 SHINY_SUBDIR = "shiny"
@@ -41,6 +42,8 @@ def list_pokemon_names() -> None:
             print(pokemon["name"])
 
 
+
+
 def show_pokemon_by_name(
     name: str, show_title: bool, shiny: bool, is_large: bool, form: str = ""
 ) -> None:
@@ -49,11 +52,12 @@ def show_pokemon_by_name(
     # default to smaller size as this makes sense for most font size + terminal
     # size combinations
     size_subdir = LARGE_SUBDIR if is_large else SMALL_SUBDIR
+    
     with open(f"{PROGRAM_DIR}/pokemon.json") as file:
         pokemon_json = json.load(file)
         pokemon_names = {pokemon["name"] for pokemon in pokemon_json}
         if name not in pokemon_names:
-            print(f"Invalid pokemon {name}")
+            print(f"Invalid pokemon here {name}")
             sys.exit(1)
 
         if form:
@@ -79,6 +83,7 @@ def show_pokemon_by_name(
         else:
             print(name)
     print_file(pokemon_file)
+
 
 
 def show_random_pokemon(
@@ -136,6 +141,7 @@ def show_random_pokemon_by_names(
     if not shiny:
         shiny = random.random() <= SHINY_RATE
     show_pokemon_by_name(random_pokemon, show_title, shiny, is_large)
+
 
 
 def main() -> None:
